@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import (QApplication, QWidget, QPushButton, QLabel,
-                               QFrame, QSlider, QDoubleSpinBox)
+                               QSlider, QDoubleSpinBox)
 from PySide6.QtCore import Qt
 from About import About
+from Graph import Graph
 
 
 class HeatTransfer(QWidget):
@@ -9,6 +10,7 @@ class HeatTransfer(QWidget):
     def __init__(self):
         super().__init__()
         self.about_window = About()
+        self.graph_window = Graph(self)     # the graph window gets access to this window
         self.setupUI()
 
     def setupUI(self):
@@ -21,21 +23,16 @@ class HeatTransfer(QWidget):
         self.left_slider.setRange(0, 200)
         self.left_slider.setValue(200)
 
-        self.left_body = QFrame(self)
+        self.left_body = QLabel(self)
         self.left_body.setObjectName("body")
         self.left_body.setGeometry(70, 40, 170, 280)
         self.left_body.setStyleSheet("background-color: rgb(255, 0, 0);")
 
         self.left_temp_label = QLabel("Temp.", self)
         self.left_temp_label.setGeometry(20, 340, 50, 30)
-        self.left_temp_box = QDoubleSpinBox(self)
-        self.left_temp_box.setGeometry(75, 340, 165, 30)
-        self.left_temp_box.setRange(0, 200)
-        self.left_temp_box.setDecimals(1)
-        self.left_temp_box.setValue(200)
-        self.left_temp_box.setSuffix(" °C")
-        self.left_temp_box.setReadOnly(True)    # only the slider changes it
-        self.left_temp_box.setButtonSymbols(QDoubleSpinBox.ButtonSymbols.NoButtons)
+        self.left_temp_value = QLabel("200.0 °C", self)      # changes only through the slider
+        self.left_temp_value.setObjectName("temp_value")
+        self.left_temp_value.setGeometry(75, 340, 165, 30)
 
         self.left_mass_label = QLabel("Mass", self)
         self.left_mass_label.setGeometry(20, 380, 50, 30)
@@ -59,19 +56,14 @@ class HeatTransfer(QWidget):
         self.right_slider.setRange(0, 200)
         self.right_slider.setValue(0)
 
-        self.right_body = QFrame(self)
+        self.right_body = QLabel(self)
         self.right_body.setObjectName("body")
         self.right_body.setGeometry(460, 40, 170, 280)
         self.right_body.setStyleSheet("background-color: rgb(0, 0, 0);")
 
-        self.right_temp_box = QDoubleSpinBox(self)
-        self.right_temp_box.setGeometry(460, 340, 165, 30)
-        self.right_temp_box.setRange(0, 200)
-        self.right_temp_box.setDecimals(1)
-        self.right_temp_box.setValue(0)
-        self.right_temp_box.setSuffix(" °C")
-        self.right_temp_box.setReadOnly(True)
-        self.right_temp_box.setButtonSymbols(QDoubleSpinBox.ButtonSymbols.NoButtons)
+        self.right_temp_value = QLabel("0.0 °C", self)
+        self.right_temp_value.setObjectName("temp_value")
+        self.right_temp_value.setGeometry(460, 340, 165, 30)
         self.right_temp_label = QLabel("Temp.", self)
         self.right_temp_label.setGeometry(635, 340, 55, 30)
 
@@ -100,26 +92,31 @@ class HeatTransfer(QWidget):
         self.conductivity_box.setValue(1.00)
         self.conductivity_box.setSuffix(" J/s°C")
 
-        self.bridge = QFrame(self)
+        self.bridge = QLabel(self)
         self.bridge.setObjectName("bridge")
         self.bridge.setGeometry(240, 160, 220, 60)
+
+        self.graphs_button = QPushButton("Graphs", self)
+        self.graphs_button.setGeometry(270, 40, 160, 30)
+        self.graphs_button.clicked.connect(self.show_graph_window)
 
         self.start_button = QPushButton("Start", self)
         self.start_button.setGeometry(270, 340, 160, 30)
         self.start_button.setCheckable(True)    # toggle button (2 states)
 
-        self.graphs_button = QPushButton("Graphs", self)
-        self.graphs_button.setGeometry(270, 40, 160, 30)
-        
         self.about_button = QPushButton("About", self)
-        self.about_button.clicked.connect(self.show_about_window)
         self.about_button.setGeometry(270, 420, 160, 30)
+        self.about_button.clicked.connect(self.show_about_window)
 
         with open("style.qss", "r") as f:
             self.setStyleSheet(f.read())
 
-        def show_about_window(self):
-            self.about_window.show()
+    def show_about_window(self):
+        self.about_window.show()
+
+    def show_graph_window(self):
+        self.graph_window.show()
+
 
 if __name__ == "__main__":
     app = QApplication()

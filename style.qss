@@ -19,17 +19,11 @@ QPushButton:checked {
     background-color: #c0392b;
 }
 
-QDoubleSpinBox {
+QDoubleSpinBox, QComboBox {
     background-color: #2b2d3f;
     border: 1px solid #44475f;
     border-radius: 6px;
     padding: 2px 6px;
-}
-
-QDoubleSpinBox:read-only {
-    background-color: #171822;
-    color: #ffb347;
-    font-weight: bold;
 }
 
 QSlider::groove:vertical {
@@ -46,14 +40,23 @@ QSlider::handle:vertical {
     border-radius: 9px;
 }
 
-QFrame#bridge {
+QLabel#body {
+    border: 2px solid #f0f0f5;
+    border-radius: 12px;
+}
+
+QLabel#bridge {
     background-color: #8a8fa8;
     border: 1px solid #aab0c8;
 }
 
-QFrame#body {
-    border: 2px solid #f0f0f5;
-    border-radius: 12px;
+QLabel#temp_value {
+    background-color: #171822;
+    color: #ffb347;
+    font-weight: bold;
+    border: 1px solid #44475f;
+    border-radius: 6px;
+    padding: 2px 6px;
 }
 
 QLabel#title {
