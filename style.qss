@@ -55,3 +55,17 @@ QFrame#body {
     border: 2px solid #f0f0f5;
     border-radius: 12px;
 }
+
+QLabel#title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffb347;
+}
+
+QLabel#subtitle {
+    color: #9aa0b8;
+}
+
+QLabel a {
+    color: #7cc4ff;
+}
