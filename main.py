@@ -123,9 +123,28 @@ class HeatTransfer(QWidget):
         self.about_button.setGeometry(270, 420, 160, 30)
         self.about_button.clicked.connect(self.show_about_window)
 
+        self.left_slider.valueChanged.connect(self.left_temperature_changed)
+        self.right_slider.valueChanged.connect(self.right_temperature_changed)
+
         with open("style.qss", "r") as f:
             self.setStyleSheet(f.read())
 
+    def left_temperature_changed(self):
+        # runs while dragging the left slider:
+        # 1. read the slider value
+        # 2. show it as a number in left_temp_value
+        # 3. update the color of left_body
+        pass
+
+    def right_temperature_changed(self):
+        # same as the left one, for the right slider
+        pass
+
+    def update_body_color(self, body_label, temperature):
+        # turns the temperature (0-200) into a color between black and red
+        # and sets it as the background of body_label
+        pass
+    
     def show_about_window(self):
         self.about_window.show()
 
