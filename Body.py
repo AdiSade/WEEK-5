@@ -12,7 +12,18 @@ class Body:
         self.heat_capacity = heat_capacity  
         self.temperature = temperature
 
-        def add_heat(self, heat):
-            delta_temperature = heat / (self.mass * self.heat_capacity)     #DT = Q / (m * c)
-            self.temperature = self.temperature + delta_temperature         #new T = T + DT
-            return self.temperature
+    def add_heat(self, heat):
+        delta_temperature = heat / (self.mass * self.heat_capacity)     #DT = Q / (m * c)
+        self.temperature = self.temperature + delta_temperature         #new T = T + DT
+        return self.temperature
+
+if __name__ == "__main__":
+    body = Body(100, 0.15, 200)
+
+    result = body.add_heat(20)
+    print("after adding 20 J:", result)
+    print("expected:", 200 + 20 / (100 * 0.15))
+
+    result = body.add_heat(-40)
+    print("after adding -40 J:", result)
+    print("expected:", 200 + 20 / (100 * 0.15) - 40 / (100 * 0.15))
