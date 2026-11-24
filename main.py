@@ -16,8 +16,8 @@ class HeatTransfer(QWidget):
         # ---------- left body ----------
         self.left_slider = QSlider(Qt.Orientation.Vertical, self)
         self.left_slider.setGeometry(30, 40, 20, 280)
-        self.left_slider.setRange(0, 2000)      # tenths of a degree: 0 - 200 C
-        self.left_slider.setValue(2000)
+        self.left_slider.setRange(0, 200)
+        self.left_slider.setValue(200)
 
         self.left_body = QFrame(self)
         self.left_body.setObjectName("body")
@@ -48,19 +48,19 @@ class HeatTransfer(QWidget):
         self.left_cap_box = QDoubleSpinBox(self)
         self.left_cap_box.setGeometry(75, 420, 165, 30)
         self.left_cap_box.setRange(0.01, 100000)
-        self.left_cap_box.setValue(0.40)
+        self.left_cap_box.setValue(1)
         self.left_cap_box.setSuffix(" J/kg°C")
 
         # ---------- right body ----------
         self.right_slider = QSlider(Qt.Orientation.Vertical, self)
         self.right_slider.setGeometry(650, 40, 20, 280)
-        self.right_slider.setRange(0, 2000)
+        self.right_slider.setRange(0, 200)
         self.right_slider.setValue(0)
 
         self.right_body = QFrame(self)
         self.right_body.setObjectName("body")
         self.right_body.setGeometry(460, 40, 170, 280)
-        self.right_body.setStyleSheet("background-color: rgb(0, 0, 255);")
+        self.right_body.setStyleSheet("background-color: rgb(0, 0, 0);")
 
         self.right_temp_box = QDoubleSpinBox(self)
         self.right_temp_box.setGeometry(460, 340, 165, 30)
@@ -84,7 +84,7 @@ class HeatTransfer(QWidget):
         self.right_cap_box = QDoubleSpinBox(self)
         self.right_cap_box.setGeometry(460, 420, 165, 30)
         self.right_cap_box.setRange(0.01, 100000)
-        self.right_cap_box.setValue(0.40)
+        self.right_cap_box.setValue(1)
         self.right_cap_box.setSuffix(" J/kg°C")
         self.right_cap_label = QLabel("H. Cap.", self)
         self.right_cap_label.setGeometry(635, 420, 55, 30)
@@ -107,8 +107,8 @@ class HeatTransfer(QWidget):
         self.start_button.setCheckable(True)    # toggle button (2 states)
 
         self.graphs_button = QPushButton("Graphs", self)
-        self.graphs_button.setGeometry(270, 380, 160, 30)
-
+        self.graphs_button.setGeometry(270, 40, 160, 30)
+        
         self.about_button = QPushButton("About", self)
         self.about_button.setGeometry(270, 420, 160, 30)
 
