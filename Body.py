@@ -10,4 +10,9 @@ class Body:
 
         self.mass = mass                    
         self.heat_capacity = heat_capacity  
-        self.temperature = temperature      
+        self.temperature = temperature
+
+        def add_heat(self, heat):
+            delta_temperature = heat / (self.mass * self.heat_capacity)     #DT = Q / (m * c)
+            self.temperature = self.temperature + delta_temperature         #new T = T + DT
+            return self.temperature
