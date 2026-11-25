@@ -10,7 +10,7 @@ class Graph(QWidget):
 
     def __init__(self, main_window):
         super().__init__()
-        self.main_window = main_window      # access to the simulation data
+        self.main_window = main_window
         self.setWindowTitle("Heat Transfer - Graphs")
         self.resize(700, 420)
 
@@ -33,6 +33,9 @@ class Graph(QWidget):
         self.export_button = QPushButton("Export to CSV", self)
         self.export_button.setGeometry(520, 155, 160, 30)
 
+        self.body1_drawn = False
+        self.body2_drawn = False
+
         self.setup_axes()
 
         self.draw_button.clicked.connect(self.draw_graph)
@@ -51,18 +54,26 @@ class Graph(QWidget):
         self.canvas.draw()
 
     def draw_graph(self):
+        if len(self.main_window.time_history) == 0:
+            return
+
         selected = self.body_combo.currentIndex()
-        if selected == 0:
-            self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history, color="red", label="Body 1")
-        else:
-            self.ax.plot(self.main_window.time_history, self.main_window.body2_temp_history, color="red", label="Body 1")
+        if selected == 0 and not self.body1_drawn:
+            self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history,
+                         color="red", label="Body 1")
+            self.body1_drawn = True
+        elif selected == 1 and not self.body2_drawn:
+            self.ax.plot(self.main_window.time_history, self.main_window.body2_temp_history,
+                         color="blue", label="Body 2")
+            self.body2_drawn = True
         self.ax.legend()
         self.canvas.draw()
 
     def clear_graph(self):
         self.ax.clear()
+        self.body1_drawn = False
+        self.body2_drawn = False
         self.setup_axes()
-
     def export_csv(self):
         file_name = "heat_transfer_data.csv"
         with open(file_name, "w") as f:
