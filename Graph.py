@@ -33,7 +33,7 @@ class Graph(QWidget):
         self.export_button = QPushButton("Export to CSV", self)
         self.export_button.setGeometry(520, 155, 160, 30)
 
-        self.body1_drawn = False
+        self.body1_drawn = False        # is Body 1 already on the graph?
         self.body2_drawn = False
 
         self.setup_axes()
@@ -51,41 +51,30 @@ class Graph(QWidget):
         self.ax.set_title("Temperature over time")
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Temperature (°C)")
-        
+        self.canvas.draw()
 
     def draw_graph(self):
         if len(self.main_window.time_history) == 0:
-            return
+            return                      # no experiment yet, nothing to draw
 
-        selected = self.body_combo.currentIndex()
-        if selected == 0:
+        selected = self.body_combo.currentIndex()       # 0 = Body 1, 1 = Body 2
+        if selected == 0 and not self.body1_drawn:
+            self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history,
+                         color="red", label="Body 1")
             self.body1_drawn = True
-        else:
+        elif selected == 1 and not self.body2_drawn:
+            self.ax.plot(self.main_window.time_history, self.main_window.body2_temp_history,
+                         color="blue", label="Body 2")
             self.body2_drawn = True
-        self.refresh_graph()
+        self.ax.legend()
+        self.canvas.draw()
 
     def clear_graph(self):
         self.ax.clear()
         self.body1_drawn = False
         self.body2_drawn = False
         self.setup_axes()
-        self.canvas.draw()
 
-    def refresh_graph(self):
-        if not self.body1_drawn and not self.body2_drawn:
-            return
-
-        self.ax.clear()
-        if self.body1_drawn:
-            self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history,
-                         color="red", label="Body 1")
-        if self.body2_drawn:
-            self.ax.plot(self.main_window.time_history, self.main_window.body2_temp_history,
-                         color="blue", label="Body 2")
-        self.setup_axes()
-        self.ax.legend()
-        self.canvas.draw()
-    
     def export_csv(self):
         file_name = "heat_transfer_data.csv"
         with open(file_name, "w") as f:
