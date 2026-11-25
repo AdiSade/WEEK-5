@@ -12,28 +12,28 @@ class Graph(QWidget):
         super().__init__()
         self.main_window = main_window
         self.setWindowTitle("Heat Transfer - Graphs")
-        self.resize(700, 420)
+        self.resize(900, 560)
 
         self.figure = Figure()
         self.ax = self.figure.add_subplot(111)
         self.canvas = FigureCanvasQTAgg(self.figure)
         self.canvas.setParent(self)
-        self.canvas.setGeometry(20, 20, 480, 380)
+        self.canvas.setGeometry(20, 20, 650, 520)
 
         self.body_combo = QComboBox(self)
-        self.body_combo.setGeometry(520, 20, 160, 30)
+        self.body_combo.setGeometry(700, 20, 180, 34)
         self.body_combo.addItems(["Body 1", "Body 2"])
 
         self.draw_button = QPushButton("Draw", self)
-        self.draw_button.setGeometry(520, 65, 160, 30)
+        self.draw_button.setGeometry(700, 70, 180, 34)
 
         self.clear_button = QPushButton("Clear", self)
-        self.clear_button.setGeometry(520, 110, 160, 30)
+        self.clear_button.setGeometry(700, 120, 180, 34)
 
         self.export_button = QPushButton("Export to CSV", self)
-        self.export_button.setGeometry(520, 155, 160, 30)
+        self.export_button.setGeometry(700, 170, 180, 34)
 
-        self.body1_drawn = False        # is Body 1 already on the graph?
+        self.body1_drawn = False
         self.body2_drawn = False
 
         self.setup_axes()
@@ -56,9 +56,9 @@ class Graph(QWidget):
 
     def draw_graph(self):
         if len(self.main_window.time_history) == 0:
-            return                      # no experiment yet, nothing to draw
+            return
 
-        selected = self.body_combo.currentIndex()       # 0 = Body 1, 1 = Body 2
+        selected = self.body_combo.currentIndex()
         if selected == 0 and not self.body1_drawn:
             self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history,
                          color="red", label="Body 1")
