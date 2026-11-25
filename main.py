@@ -45,7 +45,7 @@ class HeatTransfer(QWidget):
 
         self.left_temp_label = QLabel("Temp.", self)
         self.left_temp_label.setGeometry(20, 340, 50, 30)
-        self.left_temp_value = QLabel("200.0 °C", self)      # changes only through the slider
+        self.left_temp_value = QLabel("200.0 °C", self)
         self.left_temp_value.setObjectName("temp_value")
         self.left_temp_value.setGeometry(75, 340, 165, 30)
 
@@ -121,11 +121,15 @@ class HeatTransfer(QWidget):
 
         self.start_button = QPushButton("Start", self)
         self.start_button.setGeometry(270, 340, 160, 30)
-        self.start_button.setCheckable(True)    # toggle button (2 states)
+        self.start_button.setCheckable(True)
 
         self.about_button = QPushButton("About", self)
         self.about_button.setGeometry(270, 420, 160, 30)
         self.about_button.clicked.connect(self.show_about_window)
+
+        self.status_label = QLabel("", self)
+        self.status_label.setObjectName("status")
+        self.status_label.setGeometry(250, 235, 200, 55)
 
         self.left_slider.valueChanged.connect(self.left_temperature_changed)
         self.right_slider.valueChanged.connect(self.right_temperature_changed)
@@ -158,7 +162,6 @@ class HeatTransfer(QWidget):
         self.graph_window.show()
 
     def set_inputs_enabled(self, enabled):
-        # locks / unlocks the controls that must not change while the simulation runs
         self.left_slider.setEnabled(enabled)
         self.right_slider.setEnabled(enabled)
         self.left_mass_box.setEnabled(enabled)
@@ -193,9 +196,7 @@ class HeatTransfer(QWidget):
             self.timer.start(10)
             self.start_button.setText("Stop")
         else:
-            self.timer.stop()
-            self.set_inputs_enabled(True)
-            self.start_button.setText("Start")
+            self.stop_simulation()
 
     def timer_method(self):
         temperature1 = self.body1.temperature
@@ -223,6 +224,16 @@ class HeatTransfer(QWidget):
         self.time_history.append(self.counter * self.dt)
         self.body1_temp_history.append(new_temperature1)
         self.body2_temp_history.append(new_temperature2)
+
+        if abs(new_temperature1 - new_temperature2) < 0.05:
+            self.status_label.setText(f"Equilibrium reached!<br>T = {new_temperature1:.1f} °C")
+            self.stop_simulation()
+
+    def stop_simulation(self):
+        self.timer.stop()
+        self.start_button.setChecked(False)
+        self.start_button.setText("Start")
+        self.set_inputs_enabled(True)
 
 if __name__ == "__main__":
     app = QApplication()
