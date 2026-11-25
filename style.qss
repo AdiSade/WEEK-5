@@ -92,3 +92,13 @@ QLabel#status {
 QLabel a {
     color: #7cc4ff;
 }
+
+QPushButton#egg {
+    background: transparent;
+    border: none;
+    font-size: 30px;
+}
+
+QPushButton#egg:hover {
+    background-color: #2b2d3f;
+}

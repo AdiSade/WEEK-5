@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import (QApplication, QWidget, QPushButton, QLabel,
                                QSlider, QDoubleSpinBox)
 from PySide6.QtCore import Qt, QTimer
+from Birthday import Birthday
 from Body import Body
 from About import About
 from Graph import Graph
@@ -12,6 +13,7 @@ class HeatTransfer(QWidget):
         super().__init__()
         self.about_window = About()
         self.graph_window = Graph(self)
+        self.birthday_window = Birthday()
 
         # simulation variables
         self.heat_i = 1.23
@@ -20,6 +22,7 @@ class HeatTransfer(QWidget):
         self.body1 = None
         self.body2 = None
         self.counter = 0
+        self.birthday_setup = False
 
         self.time_history = []
         self.body1_temp_history = []
@@ -208,6 +211,10 @@ class HeatTransfer(QWidget):
     def show_graph_window(self):
         self.graph_window.show()
 
+    def show_birthday_window(self):
+        self.birthday_window.start_confetti()
+        self.birthday_window.show()
+
     def set_inputs_enabled(self, enabled):
         # the heater buttons and power boxes stay enabled, they can change while running
         self.left_slider.setEnabled(enabled)
@@ -222,6 +229,8 @@ class HeatTransfer(QWidget):
         if self.start_button.isChecked():
             self.body1 = Body(self.left_mass_box.value(), self.left_cap_box.value(), self.left_slider.value())
             self.body2 = Body(self.right_mass_box.value(), self.right_cap_box.value(), self.right_slider.value())
+            self.birthday_setup = ((self.body1.mass == 2002 and self.body1.temperature == 184) or
+                                   (self.body2.mass == 2002 and self.body2.temperature == 184))
 
             self.dt = 0.01
             stability_limit = self.conductivity_box.value() * (
@@ -293,6 +302,8 @@ class HeatTransfer(QWidget):
         if heaters_off and abs(new_temperature1 - new_temperature2) < 0.05:
             self.status_label.setText(f"Equilibrium reached!<br>T = {new_temperature1:.1f} °C")
             self.stop_simulation()
+            if self.birthday_setup:
+                self.show_birthday_window()
 
     def stop_simulation(self):
         self.timer.stop()

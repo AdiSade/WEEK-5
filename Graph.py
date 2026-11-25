@@ -2,6 +2,9 @@ import os
 import sys
 import subprocess
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QComboBox
+from PySide6.QtCore import QSize
+from PySide6.QtGui import QIcon, QPixmap
+from EasterEgg import EasterEgg
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
@@ -11,6 +14,7 @@ class Graph(QWidget):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
+        self.egg_window = EasterEgg()
         self.setWindowTitle("Heat Transfer - Graphs")
         self.resize(900, 560)
 
@@ -32,6 +36,17 @@ class Graph(QWidget):
 
         self.export_button = QPushButton("Export to CSV", self)
         self.export_button.setGeometry(700, 170, 180, 34)
+        self.egg_button = QPushButton(self)
+        self.egg_button.setObjectName("egg")
+        self.egg_button.setGeometry(700, 480, 60, 60)
+        egg_picture = QPixmap("EASTER EGGS.png")        # put your picture file name here
+        if egg_picture.isNull():
+            self.egg_button.setText("🥚")
+        else:
+            self.egg_button.setIcon(QIcon(egg_picture))
+            self.egg_button.setIconSize(QSize(48, 48))
+
+        self.egg_button.clicked.connect(self.show_egg_window)
 
         self.body1_drawn = False
         self.body2_drawn = False
@@ -75,6 +90,9 @@ class Graph(QWidget):
         self.body1_drawn = False
         self.body2_drawn = False
         self.setup_axes()
+
+    def show_egg_window(self):
+        self.egg_window.show()
 
     def export_csv(self):
         file_name = "heat_transfer_data.csv"
