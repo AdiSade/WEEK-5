@@ -126,6 +126,9 @@ class HeatTransfer(QWidget):
         self.left_slider.valueChanged.connect(self.left_temperature_changed)
         self.right_slider.valueChanged.connect(self.right_temperature_changed)
 
+        self.start_button.clicked.connect(self.start_stop_button_method)
+        self.timer.timeout.connect(self.timer_method)
+
         with open("style.qss", "r") as f:
             self.setStyleSheet(f.read())
 
@@ -150,11 +153,51 @@ class HeatTransfer(QWidget):
     def show_graph_window(self):
         self.graph_window.show()
 
-    def update_body_color(self, body_label, temperature):
-        # 0 C = black, 200 C = full red
-        red = int(temperature / 200 * 255)
-        body_label.setStyleSheet(f"background-color: rgb({red}, 0, 0);")
+    def start_stop_button_method(self):
+        if self.start_button.isChecked():
+            self.body1 = Body(self.left_mass_box.value(), self.left_cap_box.value(), self.left_slider.value())
+            self.body2 = Body(self.right_mass_box.value(), self.right_cap_box.value(), self.right_slider.value())
 
+            self.counter = 0
+            self.time_history.clear()
+            self.body1_temp_history.clear()
+            self.body2_temp_history.clear()
+
+            self.time_history.append(0)
+            self.body1_temp_history.append(self.body1.temperature)
+            self.body2_temp_history.append(self.body2.temperature)
+
+            self.timer.start(10)
+            self.start_button.setText("Stop")
+        else:
+            self.timer.stop()
+            self.start_button.setText("Start")
+
+    def timer_method(self):
+        temperature1 = self.body1.temperature
+        temperature2 = self.body2.temperature
+
+        current1 = self.conductivity_box.value() * (temperature2 - temperature1)
+        current2 = self.conductivity_box.value() * (temperature1 - temperature2)
+
+        heat1 = current1 * self.dt
+        heat2 = current2 * self.dt
+
+        new_temperature1 = self.body1.add_heat(heat1)
+        new_temperature2 = self.body2.add_heat(heat2)
+
+        self.left_slider.setValue(round(new_temperature1))
+        self.left_temp_value.setText(f"{new_temperature1:.1f} °C")
+        self.update_body_color(self.left_body, new_temperature1)
+
+        self.right_slider.setValue(round(new_temperature2))
+        self.right_temp_value.setText(f"{new_temperature2:.1f} °C")
+        self.update_body_color(self.right_body, new_temperature2)
+
+        self.counter += 1
+        self.time_history.append(self.counter * self.dt)
+        self.body1_temp_history.append(new_temperature1)
+        self.body2_temp_history.append(new_temperature2)
 
 if __name__ == "__main__":
     app = QApplication()
