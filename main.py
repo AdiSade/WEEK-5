@@ -130,15 +130,14 @@ class HeatTransfer(QWidget):
             self.setStyleSheet(f.read())
 
     def left_temperature_changed(self):
-        # runs while dragging the left slider:
-        # 1. read the slider value
-        # 2. show it as a number in left_temp_value
-        # 3. update the color of left_body
-        pass
+        temperature = self.left_slider.value()
+        self.left_temp_value.setText(f"{temperature:.1f} °C")
+        self.update_body_color(self.left_body, temperature)
 
     def right_temperature_changed(self):
-        # same as the left one, for the right slider
-        pass
+        temperature = self.right_slider.value()
+        self.right_temp_value.setText(f"{temperature:.1f} °C")
+        self.update_body_color(self.right_body, temperature)
 
     def update_body_color(self, body_label, temperature):
         # 0 C = black, 200 C = full red
