@@ -141,15 +141,20 @@ class HeatTransfer(QWidget):
         pass
 
     def update_body_color(self, body_label, temperature):
-        # turns the temperature (0-200) into a color between black and red
-        # and sets it as the background of body_label
-        pass
+        # 0 C = black, 200 C = full red
+        red = int(temperature / 200 * 255)
+        body_label.setStyleSheet(f"background-color: rgb({red}, 0, 0);")
     
     def show_about_window(self):
         self.about_window.show()
 
     def show_graph_window(self):
         self.graph_window.show()
+
+    def update_body_color(self, body_label, temperature):
+        # 0 C = black, 200 C = full red
+        red = int(temperature / 200 * 255)
+        body_label.setStyleSheet(f"background-color: rgb({red}, 0, 0);")
 
 
 if __name__ == "__main__":
