@@ -206,6 +206,9 @@ class HeatTransfer(QWidget):
         self.body1_temp_history.append(new_temperature1)
         self.body2_temp_history.append(new_temperature2)
 
+        if self.graph_window.isVisible() and self.counter % 10 == 0:
+            self.graph_window.refresh_graph()
+
 if __name__ == "__main__":
     app = QApplication()
     window = HeatTransfer()
