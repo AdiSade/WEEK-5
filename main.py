@@ -15,10 +15,8 @@ class HeatTransfer(QWidget):
         self.graph_window = Graph(self)
         self.birthday_window = Birthday()
 
-        # simulation variables
-        self.heat_i = 1.23
         self.dt = 0.01
-        self.max_temperature = 200      # sliders, colors and the heater thermostat stop here
+        self.max_temperature = 200
         self.body1 = None
         self.body2 = None
         self.counter = 0
@@ -80,7 +78,7 @@ class HeatTransfer(QWidget):
         self.left_heater_button = QPushButton("Heater: OFF", self)
         self.left_heater_button.setObjectName("heater")
         self.left_heater_button.setGeometry(95, 525, 195, 34)
-        self.left_heater_button.setCheckable(True)      # toggle button (2 states)
+        self.left_heater_button.setCheckable(True)
 
         # ---------- right body ----------
         self.right_slider = QSlider(Qt.Orientation.Vertical, self)
@@ -226,7 +224,6 @@ class HeatTransfer(QWidget):
         self.birthday_window.show()
 
     def set_inputs_enabled(self, enabled):
-        # the heater buttons and power boxes stay enabled, they can change while running
         self.left_slider.setEnabled(enabled)
         self.right_slider.setEnabled(enabled)
         self.left_mass_box.setEnabled(enabled)
@@ -290,7 +287,6 @@ class HeatTransfer(QWidget):
         heat1 = current1 * self.dt
         heat2 = current2 * self.dt
 
-        # heaters: power (W) * dt (s) = heat (J). A body at max temperature stops heating (thermostat)
         if self.left_heater_button.isChecked() and temperature1 < self.max_temperature:
             heat1 = heat1 + self.left_power_box.value() * self.dt
         if self.right_heater_button.isChecked() and temperature2 < self.max_temperature:
@@ -299,7 +295,6 @@ class HeatTransfer(QWidget):
         new_temperature1 = self.body1.add_heat(heat1)
         new_temperature2 = self.body2.add_heat(heat2)
 
-        # the last step can pass the maximum, so cut it back
         if new_temperature1 > self.max_temperature:
             self.body1.temperature = self.max_temperature
             new_temperature1 = self.max_temperature
@@ -323,7 +318,6 @@ class HeatTransfer(QWidget):
 
         self.move_arrows(new_temperature1, new_temperature2)
 
-        # auto-stop only when no heater is on (a heated body never settles at the same temperature)
         heaters_off = not self.left_heater_button.isChecked() and not self.right_heater_button.isChecked()
         if heaters_off and abs(new_temperature1 - new_temperature2) < 0.05:
             self.status_label.setText(f"Equilibrium reached!<br>T = {new_temperature1:.1f} °C")
