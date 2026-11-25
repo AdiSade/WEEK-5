@@ -5,18 +5,24 @@ QWidget {
 }
 
 QPushButton {
-    background-color: #3a3d56;
-    border: 1px solid #55597a;
+    background-color: #b5532b;
+    color: #fff4e6;
+    border: 1px solid #ff9a5c;
     border-radius: 8px;
     padding: 6px;
 }
 
 QPushButton:hover {
-    background-color: #4a4e70;
+    background-color: #d2693a;
+}
+
+QPushButton:pressed {
+    background-color: #8f3d1c;
 }
 
 QPushButton:checked {
-    background-color: #c0392b;
+    background-color: #7a1f1f;
+    border: 1px solid #ff6b4a;
 }
 
 QDoubleSpinBox, QComboBox {
@@ -24,6 +30,10 @@ QDoubleSpinBox, QComboBox {
     border: 1px solid #44475f;
     border-radius: 6px;
     padding: 2px 6px;
+}
+
+QDoubleSpinBox:focus, QComboBox:focus {
+    border: 1px solid #ffb347;
 }
 
 QSlider::groove:vertical {
@@ -35,8 +45,8 @@ QSlider::groove:vertical {
 QSlider::handle:vertical {
     height: 18px;
     margin: 0 -6px;
-    background: #f5f5f5;
-    border: 2px solid #ffb347;
+    background: #ffe0b2;
+    border: 2px solid #ff9a5c;
     border-radius: 9px;
 }
 
@@ -67,6 +77,16 @@ QLabel#title {
 
 QLabel#subtitle {
     color: #9aa0b8;
+}
+
+QLabel#clock {
+    color: #ffb347;
+    font-weight: bold;
+}
+
+QLabel#status {
+    color: #ffd166;
+    font-weight: bold;
 }
 
 QLabel a {
