@@ -123,6 +123,10 @@ class HeatTransfer(QWidget):
         self.start_button.setGeometry(270, 340, 160, 30)
         self.start_button.setCheckable(True)
 
+        self.reset_button = QPushButton("Reset", self)
+        self.reset_button.setGeometry(270, 380, 160, 30)
+        self.reset_button.clicked.connect(self.reset_simulation)
+
         self.about_button = QPushButton("About", self)
         self.about_button.setGeometry(270, 420, 160, 30)
         self.about_button.clicked.connect(self.show_about_window)
@@ -234,6 +238,29 @@ class HeatTransfer(QWidget):
         self.start_button.setChecked(False)
         self.start_button.setText("Start")
         self.set_inputs_enabled(True)
+
+    def reset_simulation(self):
+        self.stop_simulation()
+
+        self.left_slider.setValue(200)
+        self.right_slider.setValue(0)
+        self.left_temperature_changed()
+        self.right_temperature_changed()
+
+        self.left_mass_box.setValue(10)
+        self.left_cap_box.setValue(1)
+        self.right_mass_box.setValue(10)
+        self.right_cap_box.setValue(1)
+        self.conductivity_box.setValue(1.00)
+
+        self.counter = 0
+        self.time_history.clear()
+        self.body1_temp_history.clear()
+        self.body2_temp_history.clear()
+
+        self.time_label.setText("Time: 0.00 s")
+        self.status_label.setText("")
+        self.graph_window.clear_graph()
 
 if __name__ == "__main__":
     app = QApplication()
