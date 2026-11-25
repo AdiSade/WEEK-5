@@ -102,3 +102,10 @@ QPushButton#egg {
 QPushButton#egg:hover {
     background-color: #2b2d3f;
 }
+
+QLabel#arrow {
+    background: transparent;
+    color: #ffb347;
+    font-size: 28px;
+    font-weight: bold;
+}

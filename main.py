@@ -145,6 +145,16 @@ class HeatTransfer(QWidget):
         self.bridge.setObjectName("bridge")
         self.bridge.setGeometry(290, 185, 280, 60)
 
+        self.arrows = []
+        self.arrows_x = []
+        for i in range(4):
+            arrow = QLabel("▶", self)
+            arrow.setObjectName("arrow")
+            arrow.setGeometry(290 + i * 62, 195, 30, 40)
+            arrow.hide()
+            self.arrows.append(arrow)
+            self.arrows_x.append(290 + i * 62.5)
+
         self.status_label = QLabel("", self)
         self.status_label.setObjectName("status")
         self.status_label.setGeometry(320, 255, 220, 45)
@@ -225,6 +235,27 @@ class HeatTransfer(QWidget):
         self.right_cap_box.setEnabled(enabled)
         self.conductivity_box.setEnabled(enabled)
 
+    def move_arrows(self, temperature1, temperature2):
+        difference = abs(temperature1 - temperature2)
+        speed = 1 + 5 * difference / self.max_temperature
+        for i in range(len(self.arrows)):
+            if temperature1 > temperature2:
+                self.arrows[i].setText("▶")
+                self.arrows_x[i] += speed
+                if self.arrows_x[i] > 540:
+                    self.arrows_x[i] -= 250
+            else:
+                self.arrows[i].setText("◀")
+                self.arrows_x[i] -= speed
+                if self.arrows_x[i] < 290:
+                    self.arrows_x[i] += 250
+            self.arrows[i].move(int(self.arrows_x[i]), 195)
+            self.arrows[i].show()
+
+    def hide_arrows(self):
+        for arrow in self.arrows:
+            arrow.hide()
+
     def start_stop_button_method(self):
         if self.start_button.isChecked():
             self.body1 = Body(self.left_mass_box.value(), self.left_cap_box.value(), self.left_slider.value())
@@ -290,6 +321,8 @@ class HeatTransfer(QWidget):
         self.body1_temp_history.append(new_temperature1)
         self.body2_temp_history.append(new_temperature2)
 
+        self.move_arrows(new_temperature1, new_temperature2)
+
         # auto-stop only when no heater is on (a heated body never settles at the same temperature)
         heaters_off = not self.left_heater_button.isChecked() and not self.right_heater_button.isChecked()
         if heaters_off and abs(new_temperature1 - new_temperature2) < 0.05:
@@ -300,6 +333,7 @@ class HeatTransfer(QWidget):
 
     def stop_simulation(self):
         self.timer.stop()
+        self.hide_arrows()
         self.start_button.setChecked(False)
         self.start_button.setText("Start")
         self.set_inputs_enabled(True)
