@@ -137,7 +137,7 @@ class HeatTransfer(QWidget):
         self.conductivity_label.setGeometry(320, 100, 220, 25)
         self.conductivity_box = QDoubleSpinBox(self)
         self.conductivity_box.setGeometry(320, 128, 220, 30)
-        self.conductivity_box.setRange(0.01, 10000)
+        self.conductivity_box.setRange(0.01, 25)
         self.conductivity_box.setValue(1.00)
         self.conductivity_box.setSuffix(" J/s°C")
 
