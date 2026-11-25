@@ -64,9 +64,14 @@ class Graph(QWidget):
         self.setup_axes()
 
     def export_csv(self):
-        # writes time, temperature 1, temperature 2 to a CSV file (with a header row)
-        # and opens it in Excel
-        pass
+        file_name = "heat_transfer_data.csv"
+        with open(file_name, "w") as f:
+            f.write("time,temperature 1,temperature 2\n")
+            for j in range(len(self.main_window.time_history)):
+                f.write(f"{self.main_window.time_history[j]},"
+                        f"{self.main_window.body1_temp_history[j]},"
+                        f"{self.main_window.body2_temp_history[j]}\n")
+        self.open_file(file_name)
 
     def open_file(self, path):
         # opens the file with the default program
