@@ -115,6 +115,10 @@ class HeatTransfer(QWidget):
         self.graphs_button.setGeometry(270, 40, 160, 30)
         self.graphs_button.clicked.connect(self.show_graph_window)
 
+        self.time_label = QLabel("Time: 0.00 s", self)
+        self.time_label.setObjectName("clock")
+        self.time_label.setGeometry(270, 300, 160, 30)
+
         self.start_button = QPushButton("Start", self)
         self.start_button.setGeometry(270, 340, 160, 30)
         self.start_button.setCheckable(True)    # toggle button (2 states)
@@ -176,6 +180,7 @@ class HeatTransfer(QWidget):
                 self.dt = 1 / stability_limit
                 
             self.counter = 0
+            self.time_label.setText("Time: 0.00 s")
             self.time_history.clear()
             self.body1_temp_history.clear()
             self.body2_temp_history.clear()
@@ -214,6 +219,7 @@ class HeatTransfer(QWidget):
         self.update_body_color(self.right_body, new_temperature2)
 
         self.counter += 1
+        self.time_label.setText(f"Time: {self.counter * self.dt:.2f} s")
         self.time_history.append(self.counter * self.dt)
         self.body1_temp_history.append(new_temperature1)
         self.body2_temp_history.append(new_temperature2)
