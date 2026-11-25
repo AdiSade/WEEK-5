@@ -158,6 +158,13 @@ class HeatTransfer(QWidget):
             self.body1 = Body(self.left_mass_box.value(), self.left_cap_box.value(), self.left_slider.value())
             self.body2 = Body(self.right_mass_box.value(), self.right_cap_box.value(), self.right_slider.value())
 
+            self.dt = 0.01
+            stability_limit = self.conductivity_box.value() * (
+                1 / (self.body1.mass * self.body1.heat_capacity) +
+                1 / (self.body2.mass * self.body2.heat_capacity))
+            if stability_limit * self.dt > 1:
+                self.dt = 1 / stability_limit
+                
             self.counter = 0
             self.time_history.clear()
             self.body1_temp_history.clear()
