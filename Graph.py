@@ -51,12 +51,12 @@ class Graph(QWidget):
         self.canvas.draw()
 
     def draw_graph(self):
-        selected = self.body_combo.currentIndex()                   # the combo box: 0 = Body 1, 1 = Body 2
+        selected = self.body_combo.currentIndex()
         if selected == 0:
-            self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history, color="red", label="Body 1")     # ax, main window time history, main window body 1 history
+            self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history, color="red", label="Body 1")
         else:
-            self.ax.plot(self.main_window.time_history, self.main_window.body2_temp_history, color="red", label="Body 1")    # ax, main window time history, main window body 2 history
-        self.ax.legend()                                    # ax
+            self.ax.plot(self.main_window.time_history, self.main_window.body2_temp_history, color="red", label="Body 1")
+        self.ax.legend()
         self.canvas.draw()
 
     def clear_graph(self):
