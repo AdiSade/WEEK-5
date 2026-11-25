@@ -51,29 +51,41 @@ class Graph(QWidget):
         self.ax.set_title("Temperature over time")
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Temperature (°C)")
-        self.canvas.draw()
+        
 
     def draw_graph(self):
         if len(self.main_window.time_history) == 0:
             return
 
         selected = self.body_combo.currentIndex()
-        if selected == 0 and not self.body1_drawn:
-            self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history,
-                         color="red", label="Body 1")
+        if selected == 0:
             self.body1_drawn = True
-        elif selected == 1 and not self.body2_drawn:
-            self.ax.plot(self.main_window.time_history, self.main_window.body2_temp_history,
-                         color="blue", label="Body 2")
+        else:
             self.body2_drawn = True
-        self.ax.legend()
-        self.canvas.draw()
+        self.refresh_graph()
 
     def clear_graph(self):
         self.ax.clear()
         self.body1_drawn = False
         self.body2_drawn = False
         self.setup_axes()
+        self.canvas.draw()
+
+    def refresh_graph(self):
+        if not self.body1_drawn and not self.body2_drawn:
+            return
+
+        self.ax.clear()
+        if self.body1_drawn:
+            self.ax.plot(self.main_window.time_history, self.main_window.body1_temp_history,
+                         color="red", label="Body 1")
+        if self.body2_drawn:
+            self.ax.plot(self.main_window.time_history, self.main_window.body2_temp_history,
+                         color="blue", label="Body 2")
+        self.setup_axes()
+        self.ax.legend()
+        self.canvas.draw()
+    
     def export_csv(self):
         file_name = "heat_transfer_data.csv"
         with open(file_name, "w") as f:
