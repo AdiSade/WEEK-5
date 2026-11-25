@@ -57,7 +57,7 @@ class HeatTransfer(QWidget):
         self.left_mass_label.setGeometry(20, 400, 70, 30)
         self.left_mass_box = QDoubleSpinBox(self)
         self.left_mass_box.setGeometry(95, 400, 195, 30)
-        self.left_mass_box.setRange(0.01, 10000)
+        self.left_mass_box.setRange(1, 10000)
         self.left_mass_box.setValue(10)
         self.left_mass_box.setSuffix(" kg")
 
@@ -65,7 +65,7 @@ class HeatTransfer(QWidget):
         self.left_cap_label.setGeometry(20, 440, 70, 30)
         self.left_cap_box = QDoubleSpinBox(self)
         self.left_cap_box.setGeometry(95, 440, 195, 30)
-        self.left_cap_box.setRange(0.01, 100000)
+        self.left_cap_box.setRange(0.5, 100000)
         self.left_cap_box.setValue(1)
         self.left_cap_box.setSuffix(" J/kg°C")
 
@@ -101,7 +101,7 @@ class HeatTransfer(QWidget):
 
         self.right_mass_box = QDoubleSpinBox(self)
         self.right_mass_box.setGeometry(570, 400, 195, 30)
-        self.right_mass_box.setRange(0.01, 10000)
+        self.right_mass_box.setRange(1, 10000)
         self.right_mass_box.setValue(10)
         self.right_mass_box.setSuffix(" kg")
         self.right_mass_label = QLabel("Mass", self)
@@ -109,7 +109,7 @@ class HeatTransfer(QWidget):
 
         self.right_cap_box = QDoubleSpinBox(self)
         self.right_cap_box.setGeometry(570, 440, 195, 30)
-        self.right_cap_box.setRange(0.01, 100000)
+        self.right_cap_box.setRange(0.5, 100000)
         self.right_cap_box.setValue(1)
         self.right_cap_box.setSuffix(" J/kg°C")
         self.right_cap_label = QLabel("H. Cap.", self)
@@ -231,13 +231,6 @@ class HeatTransfer(QWidget):
             self.body2 = Body(self.right_mass_box.value(), self.right_cap_box.value(), self.right_slider.value())
             self.birthday_setup = ((self.body1.mass == 2002 and self.body1.temperature == 184) or
                                    (self.body2.mass == 2002 and self.body2.temperature == 184))
-
-            self.dt = 0.01
-            stability_limit = self.conductivity_box.value() * (
-                1 / (self.body1.mass * self.body1.heat_capacity) +
-                1 / (self.body2.mass * self.body2.heat_capacity))
-            if stability_limit * self.dt > 1:
-                self.dt = 1 / stability_limit
 
             self.counter = 0
             self.time_label.setText("Time: 0.00 s")

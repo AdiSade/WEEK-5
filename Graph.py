@@ -39,7 +39,7 @@ class Graph(QWidget):
         self.egg_button = QPushButton(self)
         self.egg_button.setObjectName("egg")
         self.egg_button.setGeometry(700, 480, 60, 60)
-        egg_picture = QPixmap("EASTER EGGS.png")        # put your picture file name here
+        egg_picture = QPixmap("EASTER EGGS.jpg")
         if egg_picture.isNull():
             self.egg_button.setText("🥚")
         else:
