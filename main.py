@@ -153,6 +153,16 @@ class HeatTransfer(QWidget):
     def show_graph_window(self):
         self.graph_window.show()
 
+    def set_inputs_enabled(self, enabled):
+        # locks / unlocks the controls that must not change while the simulation runs
+        self.left_slider.setEnabled(enabled)
+        self.right_slider.setEnabled(enabled)
+        self.left_mass_box.setEnabled(enabled)
+        self.left_cap_box.setEnabled(enabled)
+        self.right_mass_box.setEnabled(enabled)
+        self.right_cap_box.setEnabled(enabled)
+        self.conductivity_box.setEnabled(enabled)
+
     def start_stop_button_method(self):
         if self.start_button.isChecked():
             self.body1 = Body(self.left_mass_box.value(), self.left_cap_box.value(), self.left_slider.value())
@@ -174,10 +184,12 @@ class HeatTransfer(QWidget):
             self.body1_temp_history.append(self.body1.temperature)
             self.body2_temp_history.append(self.body2.temperature)
 
+            self.set_inputs_enabled(False)
             self.timer.start(10)
             self.start_button.setText("Stop")
         else:
             self.timer.stop()
+            self.set_inputs_enabled(True)
             self.start_button.setText("Start")
 
     def timer_method(self):
