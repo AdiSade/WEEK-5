@@ -74,8 +74,12 @@ class Graph(QWidget):
         self.open_file(file_name)
 
     def open_file(self, path):
-        # opens the file with the default program
-        pass
+        if sys.platform.startswith("win"):
+            os.startfile(path)
+        elif sys.platform == "darwin":
+            subprocess.run(["open", path])
+        else:
+            subprocess.run(["xdg-open", path])
 
 
 if __name__ == "__main__":
