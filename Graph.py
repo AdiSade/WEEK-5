@@ -51,6 +51,7 @@ class Graph(QWidget):
         self.ax.set_title("Temperature over time")
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Temperature (°C)")
+        self.ax.grid(True, color="#e0e0e0", linewidth=0.6)
         self.canvas.draw()
 
     def draw_graph(self):
